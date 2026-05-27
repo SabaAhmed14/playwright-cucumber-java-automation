@@ -11,6 +11,12 @@ Then User should see the logo of the page
 Scenario:SecondScenario
 Given User opens the Automation site
 When User clicks on the "Signup/Login" button
-And User enters the name, email address and clicks on the "Signup" button
+And User enters the "config:Name", "config:Email" and clicks on the Signup button
 Then User should see the text "ENTER ACCOUNT INFORMATION"
 
+@IncorrectSignupCheck
+Scenario:ThirdScenario
+Given User opens the Automation site
+When User clicks on the "Signup/Login" button
+And User enters the "Ssdf", "Testuser@test.com" and clicks on the Signup button
+Then User should see the error message "Email Address already exist!"

@@ -8,9 +8,10 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(
 		features={"src/test/java/com/automation/playwright_bdd/features"},
 		glue= {"com.automation.playwright_bdd.stepDefinition","com.automation.playwright_bdd.hooks"},
+		tags= "@IncorrectSignupCheck",
 		plugin={"pretty",
 				"json:target/cucumber-reports/Cucumber.json",
-				"html:test-output.html"
+				"html:target/test-output.html"
 						},
 		monochrome = true,
 		dryRun = false

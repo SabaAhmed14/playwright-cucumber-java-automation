@@ -3,29 +3,26 @@ package com.automation.playwright_bdd.pages;
 import com.automation.playwright_bdd.utils.*;
 import com.microsoft.playwright.*;
 
-public class SignupPage {
-	private Page _page;
-	private Locator Name;
-	private Locator Email;
-	private Locator SignupButton;
-	
-	public SignupPage() {
-		this._page = driverFactory.page; // Get the page instance from driverFactory
-		Name = _page.locator(".signup-form>form>input:nth-child(2)");
-		Email = _page.locator(".signup-form>form>input:nth-child(3)");
-		SignupButton = _page.locator(".signup-form>form>button");
-	}
+public class SignupPage extends BasePage {
+	private String Name = ".signup-form>form>input:nth-child(2)";
+	private String Email = ".signup-form>form>input:nth-child(3)";
+	private String SignupButton = ".signup-form>form>button";
+	private String ErrorMessage = ".signup-form>form>p";
 	
 	public void enterName(String name) {
-		Name.fill(name);
+		fillLocator(Name, name);
 	}
 	
 	public void enterEmail(String email) {
-		Email.fill(email);
+		fillLocator(Email, email);
 	}
 	
 	public void clickSignupButton() {
-		SignupButton.click();
+		clickLocator(SignupButton);
 	}
-
+	
+	public String getErrorMessage() {
+		isErrorMessageDisplayed(ErrorMessage);
+		return getText(ErrorMessage);
+	}
 }
