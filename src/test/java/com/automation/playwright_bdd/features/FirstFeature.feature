@@ -1,3 +1,4 @@
+@Smoke
 Feature:FirstTest
 
 @URLCheck

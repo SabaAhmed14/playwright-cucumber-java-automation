@@ -4,35 +4,45 @@ import com.microsoft.playwright.*;
 
 public class driverFactory {
 
-	public static Page page;
-	private static Playwright playwright;
-	public static Browser browser;
-	
-	public static Page driverInitialization() {
-		// Use try-with-resources to ensure Playwright and Browser are closed automatically
-		playwright = Playwright.create();
-		
-		boolean headlessValue = Boolean.parseBoolean(configReader.getProperty("headless"));
-			
-			// Launch Chromium; setHeadless(false) to see the browser window
-			browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-				.setHeadless(headlessValue)
-				.setSlowMo(100)); // Slows down execution by 100ms for visibility
+    public static Page page;
+    private static Playwright playwright;
+    public static Browser browser;
+    public static BrowserContext context;
 
-			BrowserContext context = browser.newContext();
-			page = context.newPage();
-			
-			// Navigate and interact
-			page.navigate(configReader.getProperty("Base_URL"));
-			System.out.println("Page Title: " + page.title());
-			
-			// Cleanup happens automatically due to try-with-resources
-			return page; // Return the page for further use in tests
-	}
-	
-	public static void closeDriver() {
-		if (playwright != null) {
-			playwright.close(); // This will also close the browser and context
-		}
-	}
+    public static Page driverInitialization() {
+
+        playwright = Playwright.create();
+
+        boolean headlessValue = Boolean.parseBoolean(configReader.getProperty("headless"));
+
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(headlessValue).setSlowMo(100);
+
+        browser = playwright.chromium().launch(launchOptions);
+
+        Browser.NewContextOptions contextOptions =new Browser.NewContextOptions();
+        
+        contextOptions.setViewportSize(Integer.parseInt(configReader.getProperty("viewportWidth")),Integer.parseInt(configReader.getProperty("viewportHeight")));
+
+        context = browser.newContext(contextOptions);
+
+        page = context.newPage();
+
+        page.navigate(configReader.getProperty("Base_URL"));
+
+        System.out.println("Page Title: " + page.title());
+
+        return page;
+    }
+
+    public static void closeDriver() {
+
+        if (context != null)
+            context.close();
+
+        if (browser != null)
+            browser.close();
+
+        if (playwright != null)
+            playwright.close();
+    }
 }
